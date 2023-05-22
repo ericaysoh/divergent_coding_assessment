@@ -1,5 +1,5 @@
-import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 
 function Home() {
@@ -8,6 +8,8 @@ function Home() {
   const [warehouseName, setWarehouseName] = useState('');
 
   const onClickHandler = () => {
+    
+
     navigate('/addshelf');
     // take warehouseName and send to database, create new warehouse; the shelf page should have this warehouse name and id
   };
