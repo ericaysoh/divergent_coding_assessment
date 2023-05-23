@@ -19,9 +19,10 @@ warehouseController.getWarehouseInfo = (req, res, next) => {
 };
 
 warehouseController.createWarehouse = (req, res, next) => {
+  console.log('in createWarehouse')
   const { warehouseName } = req.body;
   const queryString = {
-    text: 'INSERT INTO Warehouse (warehouseName) VALUES ($1) RETURNING *;',
+    text: 'INSERT INTO Warehouse (warehouse_name) VALUES ($1) RETURNING *;',
     values: [warehouseName]
   };
 

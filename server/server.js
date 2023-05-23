@@ -2,15 +2,17 @@ const express = require('express');
 // const path = require('path');
 
 const app = express();
-const PORT = 3000;
+const PORT = 3333;
 
 const shelfRouter = require('./routes/shelfRouter');
+const warehouseRouter = require('./routes/warehouseRouter')
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(__dirname + '/'));
 
 app.use('/addshelf', shelfRouter);
+app.use('/warehouse', warehouseRouter);
 
 // global error handler
 app.use((err, req, res, next) => {

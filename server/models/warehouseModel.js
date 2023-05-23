@@ -2,7 +2,7 @@ const { Pool } = require('pg');
 
 const myURI = 'postgres elementsql uri here';
 
-const URI = myURI;
+// const URI = myURI;
 
 const db = new Pool({ connectionString: myURI });
 
