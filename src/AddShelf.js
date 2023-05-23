@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
 import Zone from './Zone.js';
 import { useLocation } from 'react-router-dom';
 
@@ -21,6 +21,7 @@ function AddShelf() {
               value={shelfName[props.newProp]}
               name={props.newProp}
               onChange={handleChange}
+              autoFocus='autoFocus'
             />
           </label>
         </form>
@@ -29,17 +30,16 @@ function AddShelf() {
     )
   };
 
-  const handleChange = (e) => {
+  const handleChange = useCallback((e) => {
     setShelfName((prevState) => ({
     ...prevState,
     [e.target.name]: e.target.value
     }));
     console.log('state here', shelfName, shelfName[e.target.name], e.target.name, 'value', e.target.value);
-  }
+  }, [shelfName]);
 
   const addShelf = () => {
     if (shelves.length <= 9) {
-      console.log('shelf length', shelves.length)
       setNewShelf([...shelves, 'shelf name here'])
       // setNewShelf(shelves.concat(<ShelfComponent key={`a-${shelves.length}`}/>));
     }
