@@ -1,31 +1,33 @@
 // import React from 'react';
 import { useState } from 'react';
 
-function Zone() {
-
+function Zone(props) {
+  
 
   const options = [
     { label: 'Select zone', value: 'default' },
-    { label: '1', value: 'Zone1' },
-    { label: '2', value: 'Zone2' },
-    { label: '3', value: 'Zone3' },
-    { label: '4', value: 'Zone4' },
-    { label: '5', value: 'Zone5' },
-    { label: '6', value: 'Zone6' },
-    { label: '7', value: 'Zone7' },
-    { label: '8', value: 'Zone8' },
-    { label: '9', value: 'Zone9' },
-    { label: '10', value: 'Zone10' },
-    { label: '11', value: 'Zone11' },
-    { label: '12', value: 'Zone12' },
+    { label: '1', value: 1 },
+    { label: '2', value: 2 },
+    { label: '3', value: 3 },
+    { label: '4', value: 4 },
+    { label: '5', value: 5 },
+    { label: '6', value: 6 },
+    { label: '7', value: 7 },
+    { label: '8', value: 8 },
+    { label: '9', value: 9 },
+    { label: '10', value: 10 },
+    { label: '11', value: 11 },
+    { label: '12', value: 12 },
     
   ];
      
-  const [value, setValue] = useState(options.label); // doesn't have to be options.label
+  const [value, setValue] = useState(''); // doesn't have to be options.label
+
+  // TODO: get rid of ln24 useState and ln38 value property; move ln44 <p> out to AddShelf.js using zone state
 
   const handleChange = (e) => {
     setValue(e.target.value);
-    console.log('value', value)
+    props.zoneStateFunc(e.target.value);
   };
      
   return (
@@ -35,11 +37,11 @@ function Zone() {
     Zone:
     <select value={value} onChange={handleChange}>
       {options.map((option) => (
-        <option value={option.value}>{option.label}</option>
+        <option value={option.value} key={option.value}>{option.label}</option>
       ))}
     </select>
     </label>
-    <p>You have selected {value}!</p>
+    <p>You have selected Zone {value}!</p>
   </div>
 
   );

@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useRef } from 'react';
 import Zone from './Zone.js';
 import { useLocation } from 'react-router-dom';
 
@@ -7,7 +7,14 @@ function AddShelf() {
   // create states for zones and shelves
   const [shelfName, setShelfName] = useState({});
   const [shelves, setNewShelf] = useState([]);
+  const [zone, setZone] = useState(0);
   const location = useLocation();
+  // const inputRef = useRef(null);
+
+  // const handleClick = () => {
+  //   inputRef.current.focus();
+  //   console.log('inputRef', inputRef)
+  // }
 
   const ShelfComponent = (props) => {
     return (
@@ -21,7 +28,9 @@ function AddShelf() {
               value={shelfName[props.newProp]}
               name={props.newProp}
               onChange={handleChange}
-              autoFocus='autoFocus'
+              autoFocus='true'
+              // ref={inputRef}
+              // onClick={handleClick}
             />
           </label>
         </form>
@@ -30,13 +39,13 @@ function AddShelf() {
     )
   };
 
-  const handleChange = useCallback((e) => {
+  const handleChange = (e) => {
     setShelfName((prevState) => ({
     ...prevState,
     [e.target.name]: e.target.value
     }));
     console.log('state here', shelfName, shelfName[e.target.name], e.target.name, 'value', e.target.value);
-  }, [shelfName]);
+  };
 
   const addShelf = () => {
     if (shelves.length <= 9) {
@@ -50,7 +59,7 @@ function AddShelf() {
     <div>
       <div>Warehouse name: { location.state.warehouseData }</div> 
 
-      <Zone/>
+      <Zone zoneNum={zone} zoneStateFunc={setZone}/>
       <div>Number of shelves remaining: {10 - shelves.length}</div>
       {/* <ShelfComponent key ={shelves.length} /> */}
       <button onClick={addShelf}>+ Add a new shelf</button>

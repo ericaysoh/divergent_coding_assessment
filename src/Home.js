@@ -6,20 +6,21 @@ function Home() {
   
   const navigate = useNavigate();
   const [warehouseName, setWarehouseName] = useState('');
-  let data = {}; // edit later, use const
+  let warehouse_data = {}; // edit later, use const
 
   const onClickHandler = () => {
-    if (warehouseName) { // and if warehouse name doesn't already exist in database... better to put it in controller query??
+    if (warehouseName !== '') { // and if warehouse name doesn't already exist in database... better to put it in controller query??
       fetch ('/warehouse/createWarehouse', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ warehouseName: warehouseName })
       })
-      .then(response => { data = response; console.log('data here:', data) }) // will contain warehouseData.. want to pass this data (warehouse id and name) to addshelf page when navigating
+      .then(res => res.json())
+      .then(data => { warehouse_data = data; console.log('data here:', data.warehouse) }) // -> {warehouse_id: 7, warehouse_name: 'eee'}
       .catch(error => console.log(error));
+      
+      navigate('/addshelf', { state: { warehouseData: warehouseName } });
     }
-
-    navigate('/addshelf', { state: { warehouseData: warehouseName } });
   };
 
   return (

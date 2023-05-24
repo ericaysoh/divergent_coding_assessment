@@ -14,7 +14,7 @@ router.post(
   '/createWarehouse',
   warehouseController.createWarehouse,
   (req, res) => {
-    return res.status(200).json(res.locals.warehouseData);
+    return res.status(200).json(res.locals.data);
   }
 );
 
