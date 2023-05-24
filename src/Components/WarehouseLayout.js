@@ -1,6 +1,6 @@
 import React from 'react';
 
-function WarehouseLayout() {
+function WarehouseLayout(props) {
 
   const Box = () => {
 
@@ -9,7 +9,7 @@ function WarehouseLayout() {
         backgroundColor: '#3334',
         borderRadius: 40,
         borderColor: 'purple',
-        color: '#eee',
+        color: '#fff',
         minHeight: 100,
         padding: 12,
         width: 120,
@@ -20,8 +20,9 @@ function WarehouseLayout() {
 
   return (
     <div>
-      <Box></Box>
-      <Box></Box>
+      <Box key='1'>hello</Box>
+      <Box key='2'></Box>
+      {/* match key with zone in conditional statement, if key is loosely equal to zone number*/}
     </div>
   )
 };

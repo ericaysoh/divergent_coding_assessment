@@ -55,6 +55,21 @@ function AddShelf() {
     }
   };
 
+  const submitShelf = () => {
+    // fetch request to post data
+    fetch ('/addshelf/createShelf', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ zoneNum: zone, shelvesArr: shelves })
+    })
+    .then(res => res.json())
+    .then(data => console.log(data))
+    .catch(error => console.log(error))
+  };
+
+  // define function to fetch warehouse data and pass down to warehouselayout as a prop; call function there... automatic re-render?
+
+
 
   return (
     <div>
@@ -64,16 +79,15 @@ function AddShelf() {
       <div>Number of shelves remaining: {10 - shelves.length}</div>
       {/* <ShelfComponent key ={shelves.length} /> */}
       <button onClick={addShelf}>+ Add a new shelf</button>
-        <button >Submit</button>
         {shelves.map((item, i) => ( <ShelfComponent key={`s-${i}`} newProp={`s-${i}`}/> ))}
         {/* {shelves} */}
+      
+      <button onClick={submitShelf}>Submit</button>
 
       <div className='warehouseLayout'>
         layout of warehouse will go here
       </div>
-      <WarehouseLayout>
-        hihihi
-      </WarehouseLayout>
+      <WarehouseLayout zoneNum={zone} shelvesArr={shelves}/>
     </div>
   );
 }
