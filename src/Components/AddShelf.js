@@ -1,6 +1,7 @@
 import React, { useState, useRef } from 'react';
-import Zone from './Zone.js';
 import { useLocation } from 'react-router-dom';
+import Zone from './Zone.js';
+import WarehouseLayout from './WarehouseLayout.js';
 
 function AddShelf() {
 
@@ -28,7 +29,7 @@ function AddShelf() {
               value={shelfName[props.newProp]}
               name={props.newProp}
               onChange={handleChange}
-              autoFocus='true'
+              autoFocus={true}
               // ref={inputRef}
               // onClick={handleClick}
             />
@@ -70,6 +71,9 @@ function AddShelf() {
       <div className='warehouseLayout'>
         layout of warehouse will go here
       </div>
+      <WarehouseLayout>
+        hihihi
+      </WarehouseLayout>
     </div>
   );
 }

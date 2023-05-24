@@ -1,7 +1,7 @@
 import './App.css';
 import { Routes, Route } from 'react-router-dom';
-import Home from './Home';
-import AddShelf from './AddShelf';
+import Home from './Components/Home';
+import AddShelf from './Components/AddShelf';
 
 function App() {
   return (
