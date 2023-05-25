@@ -1,12 +1,12 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useLocation } from 'react-router-dom';
 import Zone from './Zone.js';
 import WarehouseLayout from './WarehouseLayout.js';
 
-function AddShelf() {
+const AddShelf = () => {
 
   // create states for zones and shelves
-  const [shelfName, setShelfName] = useState({});
+  const [shelfNames, setShelfNames] = useState({});
   const [shelves, setNewShelf] = useState([]);
   const [zone, setZone] = useState(0);
   const location = useLocation();
@@ -17,6 +17,8 @@ function AddShelf() {
   //   console.log('inputRef', inputRef)
   // }
 
+  const { warehouse_name: warehouseName, warehouse_id: warehouseId } = location.state.warehouseData;
+
   const ShelfComponent = (props) => {
     return (
       <div className="shelf">
@@ -26,7 +28,7 @@ function AddShelf() {
             <input 
               type='text' 
               placeholder='new shelf name here'
-              value={shelfName[props.newProp]}
+              value={shelfNames[props.newProp]}
               name={props.newProp}
               onChange={handleChange}
               autoFocus={true}
@@ -41,26 +43,33 @@ function AddShelf() {
   };
 
   const handleChange = (e) => {
-    setShelfName((prevState) => ({
+    setShelfNames((prevState) => ({
     ...prevState,
     [e.target.name]: e.target.value
     }));
-    console.log('state here', shelfName, shelfName[e.target.name], e.target.name, 'value', e.target.value);
   };
 
   const addShelf = () => {
     if (shelves.length <= 9) {
-      setNewShelf([...shelves, 'shelf name here'])
+      setNewShelf([...shelves, shelfNames])
       // setNewShelf(shelves.concat(<ShelfComponent key={`a-${shelves.length}`}/>));
     }
   };
 
+  useEffect(() => {
+    console.log('shelves state', shelves, 'shelf name', shelfNames);
+  }, [shelves, shelfNames]
+  );
+
+  // const submitShelf = () => {
+  //   setNewShelf();
+  // };
+
   const submitShelf = () => {
-    // fetch request to post data
     fetch ('/addshelf/createShelf', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ zoneNum: zone, shelvesArr: shelves })
+      body: JSON.stringify({ zone, shelfNames, warehouseId: warehouseId })
     })
     .then(res => res.json())
     .then(data => console.log(data))
@@ -73,13 +82,13 @@ function AddShelf() {
 
   return (
     <div>
-      <div>Warehouse name: { location.state.warehouseData }</div> 
+      <div>Warehouse name: { warehouseName }</div> 
 
       <Zone zoneNum={zone} zoneStateFunc={setZone}/>
       <div>Number of shelves remaining: {10 - shelves.length}</div>
       {/* <ShelfComponent key ={shelves.length} /> */}
       <button onClick={addShelf}>+ Add a new shelf</button>
-        {shelves.map((item, i) => ( <ShelfComponent key={`s-${i}`} newProp={`s-${i}`}/> ))}
+        {shelves.map((item, i) => ( <ShelfComponent key={`s-${i}`} newProp={`s${i}`}/> ))}
         {/* {shelves} */}
       
       <button onClick={submitShelf}>Submit</button>

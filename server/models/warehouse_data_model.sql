@@ -6,7 +6,7 @@ CREATE TABLE Warehouse (
 
 -- Shelf table
 CREATE TABLE Shelf (
-  shelf_id SERIAL PRIMARY KEY,
+  shelf_id VARCHAR PRIMARY KEY,
   shelf_name VARCHAR(255),
   zone_id INT REFERENCES zone(zone_id),
   warehouse_id INT REFERENCES warehouse(warehouse_id)

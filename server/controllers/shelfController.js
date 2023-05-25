@@ -20,34 +20,49 @@ shelfController.getZoneInfo = (req, res, next) => {
 
 shelfController.createShelf = (req, res, next) => {
   console.log('in createShelf')
-  const { zone, shelves } = req.body;
+  const { zone, shelfNames, warehouseId } = req.body;
 
-  // iterate through shelves array and retrieve shelf names
-  //TODO: revert data model back to original - no Zone table, zone_id to zone and no references
+ 
+  // console.log('zone', zone, 'shelves', shelfNames, 'warehouseId', warehouse) // -> zone 5 shelves [ {}, { 's-0': 'hgjbkjbj' } ]
 
-  const queryString = {
-    text: 'INSERT INTO "Shelf" (zone, shelf_name) VALUES ($1, $2) RETURNING *;',
-    values: [zone, shelves]
-  };
+  let shelfId;
+  let shelf;
+  const zondId = Number(zone);
 
-//   const query = {
-//     text: 'SELECT $1::text as first_name, $2::text as last_name',
-//     values: ['Brian', 'Carlson'],
-//     rowMode: 'array',
-//   }
+  
+  
+  for (let key in shelfNames) {
+    
+    shelfId = key + 'z' + zone;
+    shelf = shelfNames[key];
+    
+    const queryString = {
+      text: 'INSERT INTO "Shelf" (shelf_id, shelf_name, zone_id, warehouse_id) VALUES ($1, $2, $3, $4) RETURNING *;',
+      values: [shelfId, shelf, zondId, warehouseId]
+    };
 
-  db.query(queryString)
+    db.query(queryString)
     .then((data) => {
       res.locals.data = { shelf: data.rows };
       return next();
     })
     .catch((err) => {
+      console.log('err', err);
       next({
         log: 'Error occurred in shelfController.createShelf',
         status: 400,
         message: { err: 'An error occurred' }
       });
     });
+
+  }
+//   const query = {
+//     text: 'SELECT $1::text as first_name, $2::text as last_name',
+//     values: ['Brian', 'Carlson'],
+//     rowMode: 'array',
+//   }
+
+  
 };
 
 module.exports = shelfController;

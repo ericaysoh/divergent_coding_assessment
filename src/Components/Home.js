@@ -2,30 +2,58 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 
-function Home() {
+const Home = () => {
   
   const navigate = useNavigate();
   const [warehouseName, setWarehouseName] = useState('');
-  let warehouse_data = {}; // edit later, use const
 
-  const onClickHandler = () => {
-    if (warehouseName !== '') { // and if warehouse name doesn't already exist in database... better to put it in controller query??
-      fetch ('/warehouse/createWarehouse', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ warehouseName: warehouseName })
-      })
-      .then(res => res.json())
-      .then(data => { warehouse_data = data; console.log('data here:', data.warehouse) }) // -> {warehouse_id: 7, warehouse_name: 'eee'}
-      .catch(error => console.log(error));
+  // const onClickHandler = () => {
+
+  //   if (warehouseName !== '') {
+  //     fetch ('/warehouse/createWarehouse', {
+  //       method: 'POST',
+  //       headers: { 'Content-Type': 'application/json' },
+  //       body: JSON.stringify({ warehouseName: warehouseName })
+  //     })
+  //     .then(res => res.json())
+  //     .then(data => setWarehouseData(data.warehouse) ) // -> {warehouse_id: 7, warehouse_name: 'eee'}
+  //     .catch(error => console.log(error));
       
-      navigate('/addshelf', { state: { warehouseData: warehouseName } });
+  //     console.log('warehousedata', warehouseData)
+  //     navigate('/addshelf', { state: { warehouseData: warehouseData } });
+  //   }
+  // };
+  
+  let jsonData;
+
+  const doFetch = async() => {
+    
+    try {
+      const response = await (fetch('/warehouse/createWarehouse', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ warehouseName: warehouseName })
+            }));
+      jsonData = await response.json();
+      return jsonData;
+
+    } catch (error) {
+      console.log(error)
+    } 
+  }
+
+
+  const onClickHandler = async (event) => {
+    event.preventDefault();
+    if (warehouseName !== '') {
+      await doFetch();
+      navigate('/addshelf', { state: { warehouseData: jsonData.warehouse[0] } });
     }
-  };
+  }
 
   return (
     <div className='Home'>
-      <form>
+      <form onSubmit={onClickHandler}>
         <label>
           <input 
             type='text' 
@@ -34,8 +62,9 @@ function Home() {
             onChange={(e) => setWarehouseName(e.target.value)}
           />
         </label>
+        <button type='submit'>Create new warehouse</button>
       </form>
-      <button onClick={onClickHandler}>Create new warehouse</button>
+      {/* <button onClick={onClickHandler}>Create new warehouse</button> */}
     </div>
   );
 }
