@@ -10,11 +10,21 @@ body {
   margin: auto;
   display: flex;
   justify-content: center;
+  align-items: center;
 }
 
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
+}
+
+.home {
+  display: flex;
+  /* align-items: center; */
+  flex-direction: column;
+  justify-content: center;
+  /* margin: 10em; */
+  height: 70vh;
 }
 
 .dashboard {

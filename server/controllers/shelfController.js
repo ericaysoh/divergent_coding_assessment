@@ -1,9 +1,9 @@
-const db = require('../models/warehouseModel');
+const db = require("../models/warehouseModel");
 const shelfController = {};
 
 shelfController.getZoneInfo = (req, res, next) => {
   const queryString = 'SELECT * FROM "Zone";';
-  
+
   db.query(queryString)
     .then((data) => {
       res.locals.data = { zone: data.rows };
@@ -11,58 +11,55 @@ shelfController.getZoneInfo = (req, res, next) => {
     })
     .catch((err) => {
       next({
-        log: 'Error occurred in shelfController.getWarehouseInfo',
+        log: "Error occurred in shelfController.getWarehouseInfo",
         status: 400,
-        message: { err: 'An error occurred' }
+        message: { err: "An error occurred" },
       });
     });
 };
 
 shelfController.createShelf = (req, res, next) => {
-  console.log('in createShelf')
   const { zone, shelfNames, warehouseId } = req.body;
-
- 
-  // console.log('zone', zone, 'shelves', shelfNames, 'warehouseId', warehouse) // -> zone 5 shelves [ {}, { 's-0': 'hgjbkjbj' } ]
 
   let shelfId;
   let shelf;
   const zondId = Number(zone);
 
-  
-  
-  for (let key in shelfNames) {
-    
-    shelfId = key + 'z' + zone;
-    shelf = shelfNames[key];
-    
-    const queryString = {
-      text: 'INSERT INTO "Shelf" (shelf_id, shelf_name, zone_id, warehouse_id) VALUES ($1, $2, $3, $4) RETURNING *;',
-      values: [shelfId, shelf, zondId, warehouseId]
-    };
+  const shelfArr = [];
 
-    db.query(queryString)
+  for (let key in shelfNames) {
+    shelfId = key + "z" + zone;
+    shelf = shelfNames[key];
+
+    shelfArr.push([shelfId, shelf, zondId, warehouseId]);
+  }
+
+  const queryString = ` 
+  INSERT INTO "Shelf" (shelf_id, shelf_name, zone_id, warehouse_id)
+  SELECT shelfId_value, shelfName_value, zoneId_value, warehouseId_value
+  FROM unnest($1::text[], $2::text[], $3::integer[], $4::integer[]) AS t (shelfId_value, shelfName_value, zoneId_value, warehouseId_value);
+`;
+
+  const values = [
+    shelfArr.map((v) => v[0]), // shelf_id values
+    shelfArr.map((v) => v[1]), // shelf_name values
+    shelfArr.map((v) => v[2]), // zone_id values
+    shelfArr.map((v) => v[3]), // warehouse_id values
+  ];
+
+  db.query(queryString, values)
     .then((data) => {
       res.locals.data = { shelf: data.rows };
       return next();
     })
     .catch((err) => {
-      console.log('err', err);
+      console.log("err", err);
       next({
-        log: 'Error occurred in shelfController.createShelf',
+        log: "Error occurred in shelfController.createShelf",
         status: 400,
-        message: { err: 'An error occurred' }
+        message: { err: "An error occurred" },
       });
     });
-
-  }
-//   const query = {
-//     text: 'SELECT $1::text as first_name, $2::text as last_name',
-//     values: ['Brian', 'Carlson'],
-//     rowMode: 'array',
-//   }
-
-  
 };
 
 module.exports = shelfController;
