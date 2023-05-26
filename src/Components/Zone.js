@@ -33,14 +33,12 @@ function Zone(props) {
   return (
 
   <div>
-    <label>
     Zone:
     <select value={value} onChange={handleChange}>
       {options.map((option) => (
         <option value={option.value} key={option.value}>{option.label}</option>
       ))}
     </select>
-    </label>
     <p>You have selected Zone {value}!</p>
   </div>
 

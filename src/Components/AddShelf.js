@@ -21,8 +21,7 @@ const AddShelf = () => {
 
   const ShelfComponent = (props) => {
     return (
-      <div className="shelf">
-        {/* add shelf button, which creates another shelf name form */}
+      <div class="shelf">
         <form>
           <label>
             <input 
@@ -56,10 +55,10 @@ const AddShelf = () => {
     }
   };
 
-  useEffect(() => {
-    console.log('shelves state', shelves, 'shelf name', shelfNames);
-  }, [shelves, shelfNames]
-  );
+  // useEffect(() => {
+  //   console.log('shelves state', shelves, 'shelf name', shelfNames);
+  // }, [shelves, shelfNames]
+  // );
 
   // const submitShelf = () => {
   //   setNewShelf();
@@ -81,20 +80,24 @@ const AddShelf = () => {
 
 
   return (
-    <div>
-      <div>Warehouse name: { warehouseName }</div> 
+    <div className='dashboard'>
+      <h1 className='whn'>Warehouse name: { warehouseName }</h1> 
 
       <Zone zoneNum={zone} zoneStateFunc={setZone}/>
       <div>Number of shelves remaining: {10 - shelves.length}</div>
       {/* <ShelfComponent key ={shelves.length} /> */}
-      <button onClick={addShelf}>+ Add a new shelf</button>
-        {shelves.map((item, i) => ( <ShelfComponent key={`s-${i}`} newProp={`s${i}`}/> ))}
-        {/* {shelves} */}
+
+      <div className='shelves'>
+
+        <button onClick={addShelf}>+ Add a new shelf</button>
+          {shelves.map((item, i) => ( <ShelfComponent key={`s-${i}`} newProp={`s${i}`}/> ))}
+          {/* {shelves} */}
+      </div>
       
       <button onClick={submitShelf}>Submit</button>
-
+   
       <div className='warehouseLayout'>
-        layout of warehouse will go here
+        Warehouse Layout
       </div>
       <WarehouseLayout zoneNum={zone} shelvesArr={shelves}/>
     </div>
