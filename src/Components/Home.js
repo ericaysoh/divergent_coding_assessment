@@ -7,23 +7,6 @@ const Home = () => {
   
   const navigate = useNavigate();
   const [warehouseName, setWarehouseName] = useState('');
-
-  // const onClickHandler = () => {
-
-  //   if (warehouseName !== '') {
-  //     fetch ('/warehouse/createWarehouse', {
-  //       method: 'POST',
-  //       headers: { 'Content-Type': 'application/json' },
-  //       body: JSON.stringify({ warehouseName: warehouseName })
-  //     })
-  //     .then(res => res.json())
-  //     .then(data => setWarehouseData(data.warehouse) ) // -> {warehouse_id: 7, warehouse_name: 'eee'}
-  //     .catch(error => console.log(error));
-      
-  //     console.log('warehousedata', warehouseData)
-  //     navigate('/addshelf', { state: { warehouseData: warehouseData } });
-  //   }
-  // };
   
   let jsonData;
 
@@ -31,10 +14,10 @@ const Home = () => {
     
     try {
       const response = await (fetch('/warehouse/createWarehouse', {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify({ warehouseName: warehouseName })
-            }));
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ warehouseName: warehouseName })
+      }));
       jsonData = await response.json();
       return jsonData;
 
@@ -65,7 +48,6 @@ const Home = () => {
         </label>
         <button type='submit'>Create new warehouse</button>
       </form>
-      {/* <button onClick={onClickHandler}>Create new warehouse</button> */}
     </div>
   );
 }
